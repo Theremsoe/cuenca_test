@@ -16,7 +16,11 @@ http_puzzle_router = APIRouter(prefix="/puzzle")
 
 
 @http_puzzle_router.post(
-    "/", status_code=201, name="api.v1.puzzle.store", operation_id="puzzle.store"
+    "/",
+    status_code=201,
+    name="api.v1.puzzle.store",
+    operation_id="puzzle.store",
+    description="Retrieve a size parameter and execute (in background mode) the N Queen puzzle",
 )
 def store(
     payload: PuzzleRequest, session: SessionDep, background_task: BackgroundTasks
@@ -36,6 +40,7 @@ def store(
     "/{puzzle_id}",
     name="api.v1.puzzle.fetch_one",
     operation_id="puzzle.fetch_one",
+    description="Get the puzzle profile record",
 )
 def fetch_one(puzzle_id: int, session: SessionDep) -> Puzzle:
     puzzle: Optional[Puzzle] = session.get(Puzzle, puzzle_id)
@@ -50,6 +55,7 @@ def fetch_one(puzzle_id: int, session: SessionDep) -> Puzzle:
     "/{puzzle_id}/results",
     name="api.v1.puzzle.rel.result.fetch",
     operation_id="puzzle.rel.result.fetch",
+    description="Return the results of a puzzle execution using puzzle_id parameter",
 )
 def fetch(
     puzzle_id: int,
