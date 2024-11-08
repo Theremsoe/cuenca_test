@@ -37,23 +37,28 @@
 ehthumbs.db
 Thumbs.db
 
-# Python
+# Python common #
+################
 *.pot
 *.pyc
 __pycache__
-media
+*.bak
+venv
+.pyre
 .pytest_cache
 
 # Unit test / scoring reports
+################
 unit.xml
+.pytest_cache
+*coverage*
+htmlcov
+junit
 
-# Distribution / packaging
-dist/
-
-# Environments
+# Local environment #
+##############################
 .env
-env/
-venv/
+.idea
 
 # IDE specific
 .idea/

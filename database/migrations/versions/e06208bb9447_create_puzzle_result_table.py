@@ -24,8 +24,9 @@ def upgrade() -> None:
         "puzzle_result",
         sa.Column("id", sa.UUID, primary_key=True),
         sa.Column("puzzle_id", sa.BigInteger),
-        sa.Column("solution", sa.Integer),
+        sa.Column("algorithm", sa.String),
         sa.Column("board", sa.JSON),
+        sa.Column("duration", sa.BigInteger, default=0),
         sa.Column("created_at", sa.TIMESTAMP),
         sa.Column("updated_at", sa.TIMESTAMP),
     )

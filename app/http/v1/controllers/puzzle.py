@@ -1,12 +1,15 @@
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, BackgroundTasks
 from datetime import datetime
 from sqlmodel import select
+
+from sqlalchemy import desc
 
 from app.request.puzzle import PuzzleRequest
 from app.models.puzzle import Puzzle
 from app.models.puzzle_result import PuzzleResult
+from app.jobs.n_queens_job import execute_n_queen_puzzle_job
 from providers.database import SessionDep
 
 http_puzzle_router = APIRouter(prefix="/puzzle")
@@ -15,14 +18,18 @@ http_puzzle_router = APIRouter(prefix="/puzzle")
 @http_puzzle_router.post(
     "/", status_code=201, name="api.v1.puzzle.store", operation_id="puzzle.store"
 )
-def store(payload: PuzzleRequest, session: SessionDep) -> Puzzle:
+def store(
+    payload: PuzzleRequest, session: SessionDep, background_task: BackgroundTasks
+) -> Puzzle:
     puzzle = Puzzle(size=payload.size, name=payload.name)
 
     session.add(puzzle)
     session.commit()
     session.refresh(puzzle)
 
-    return payload
+    background_task.add_task(execute_n_queen_puzzle_job, session, puzzle)
+
+    return puzzle
 
 
 @http_puzzle_router.get(
@@ -62,6 +69,7 @@ def fetch(
             PuzzleResult.puzzle_id == puzzle.id,
             PuzzleResult.created_at <= ts.isoformat(),
         )
+        .order_by(desc(PuzzleResult.created_at))
         .limit(50)
     )
 

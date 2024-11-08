@@ -26,17 +26,14 @@ class DatabaseConfig(BaseSettings):
     @computed_field  # type: ignore[prop-decorator]
     @property
     def uri(self) -> MultiHostUrl:
-        if self.driver == "postgresql":
-            return MultiHostUrl.build(
-                scheme=self.driver,
-                username=self.username,
-                password=self.password,
-                host=self.host,
-                port=self.port,
-                path=self.database,
-            )
-
-        return MultiHostUrl.build(scheme="sqlite", host=self.database)
+        return MultiHostUrl.build(
+            scheme=self.driver,
+            username=self.username,
+            password=self.password,
+            host=self.host,
+            port=self.port,
+            path=self.database,
+        )
 
     @staticmethod
     @lru_cache

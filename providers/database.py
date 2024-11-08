@@ -16,10 +16,6 @@ db_config = DatabaseConfig.make()
 engine = create_engine(str(db_config.uri), connect_args={})
 
 
-def migrate_db() -> None:
-    SQLModel.metadata.create_all(bind=engine)
-
-
 def get_session():
     with Session(engine) as session:
         yield session

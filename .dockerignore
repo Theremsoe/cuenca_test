@@ -55,11 +55,13 @@ venv
 .pytest_cache
 
 
-# Pytest and coverage #
+# Unit test / scoring reports
 ################
-coverage.xml
-.coverage
+unit.xml
+.pytest_cache
+*coverage*
 htmlcov
+junit
 
 # Local environment #
 ##############################
@@ -73,7 +75,7 @@ htmlcov
 .gitignore
 .github
 
-# Infrastructure
+# Docker
 ##############################
 postgres-data
 docker-compose.yml
